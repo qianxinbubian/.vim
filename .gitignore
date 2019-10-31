@@ -1,0 +1,5 @@
+#   忽略安装信息
+vim81/
+texlive/
+#   忽略插件文件，需要重新添加
+plugged/YCMuninstall.tar.xz
