@@ -17,109 +17,49 @@ else
     let g:isgui=0
 endif
 "===================================================================
-"   @   Windows Gvim 默认配置> 做了一点修改
+"   @   auto download plug.vim
 "===================================================================
-if (g:iswindows && g:isgui)
-    source $VIMRUNTIME/delmenu.vim
-    source $VIMRUNTIME/menu.vim
-    source $VIMRUNTIME/vimrc_example.vim
-    source $VIMRUNTIME/mswin.vim
-    behave mswin
-    set diffexpr=MyDiff()
-    function MyDiff()
-        let opt = '-a --binary '
-        if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-        if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-        let arg1 = v:fname_in
-        if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-        let arg2 = v:fname_new
-        if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-        let arg3 = v:fname_out
-        if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-        let eq = ''
-        if $VIMRUNTIME =~ ' '
-            if &sh =~ '\<cmd'
-                let cmd = '""' . $VIMRUNTIME . '\diff"'
-                let eq = '"'
-            else
-                let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-            endif
-        else
-            let cmd = $VIMRUNTIME . '\diff'
-        endif
-        silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-    endfunction
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-" -----------------------------------------------------------------------------
-"   @   Linux Gvim/Vim 默认配置> 做了一点修改
-" -----------------------------------------------------------------------------
-if g:islinux
-    set hlsearch        "高亮搜索
-    set incsearch       "在输入要搜索的文字时，实时匹配
-    " Uncomment the following to have Vim jump to the last position when
-    " reopening a file
-    if has("autocmd")
-        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-    endif
-    if g:isgui
-        " Source a global configuration file if available
-        if filereadable("/etc/vim/gvimrc.local")
-            source /etc/vim/gvimrc.local
-        endif
-    else
-        " This line should not be removed as it ensures that various options are
-        " properly set to work with the Vim-related packages available in Debian.
-        runtime! debian.vim
-        " Vim5 and later versions support syntax highlighting. Uncommenting the next
-        " line enables syntax highlighting by default.
-        if has("syntax")
-            syntax on
-        endif
-        set mouse=a                    " 在任何模式下启用鼠标
-        set t_Co=256                   " 在终端启用256色
-        set backspace=2                " 设置退格键可用
-        " Source a global configuration file if available
-        if filereadable("/etc/vim/vimrc.local")
-            source /etc/vim/vimrc.local
-        endif
-    endif
-endif
+
 "=============================================================
-"   @   插件管理 使用Plug管理插件
+"   @   Plugins With Plug
 "=============================================================
-let g:fl=1
-autocmd BufRead,BufNewFile *.tex let g:fl=0
 if g:islinux
-    call plug#begin('~/.vim/plugged')
+   call plug#begin('~/.vim/plugged')
 else
-    call plug#begin('$VIM/plugged')
+   call plug#begin('$VIM/plugged')
 endif
 Plug 'vim-scripts/a.vim'                                      "能够实现文件接口切换
 Plug 'vim-scripts/matchit.zip'                                "扩展%功能的插件，成对跳转
 Plug 'Shougo/neocomplcache.vim'                               "自动补全
-Plug 'vim-scripts/OmniCppComplete'                            "C++补全插件
+"Plug 'vim-scripts/OmniCppComplete'                            "C++补全插件
 Plug 'scrooloose/nerdcommenter'                               "注释插件
 Plug 'kshenoy/vim-signature'                                  "书签可视化插件
 Plug 'majutsushi/tagbar'                                      "taglist的增强版，查看标签，依赖于ctags
 Plug 'scrooloose/nerdtree'                                    "文件浏览
 Plug 'Yggdroot/indentLine'                                    "缩进线
 Plug 'https://github.com/junegunn/vim-easy-align.git'         "自动对其代码
-Plug 'https://github.com/housansan/cvim'                      "超级C/C++工具
+"Plug 'https://github.com/housansan/cvim'                      "超级C/C++工具
 Plug 'https://github.com/mbbill/echofunc.git'                 "显示函数原型 
 Plug 'https://github.com/Valloric/YouCompleteMe.git'          "YCM补全
-Plug 'w0rp/ale'                                               "语句错误检查
-Plug 'nvie/vim-flake8'                                        "python的PEP8格式
+"Plug 'w0rp/ale'                                               "语句错误检查
 Plug 'octol/vim-cpp-enhanced-highlight'                       "C++语法高亮
 Plug 'luochen1990/rainbow'                                    "彩虹括号
 Plug 'Yggdroot/LeaderF'
 Plug 'https://github.com/SirVer/ultisnips.git'
 Plug 'honza/vim-snippets'
-if g:iswindows
 Plug 'https://github.com/yinflying/matlab.vim.git'            "matlab插件
-endif
 Plug 'vim-latex/vim-latex'
 Plug 'jiangmiao/auto-pairs'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+
+
 call plug#end()
+
 filetype on
 filetype plugin on
 filetype indent on
@@ -171,7 +111,7 @@ nnoremap <c-n>      <esc>:noh<CR>
 "*******************************************************
 "colorscheme tatami
 "colorscheme zenburn
-colorscheme distinguished
+"colorscheme distinguished
 "colorscheme vividchalk
 "colo seoul256
 "let g:seoul256_background = 233
@@ -194,7 +134,7 @@ set autoread
 let &termencoding = &encoding
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,shift-jis,gb18030,gbk,gb2312,cp936,latin-1
-language Messages zh_CN,utf-8 "解决consle输出乱码
+"language Messages zh_CN,utf-8 "解决consle输出乱码
 "set guifont=YaHei\ Consolas\ Hybrid:h14  "设置字体
 set guifont=Monaco:h14
 set expandtab
@@ -229,6 +169,7 @@ set showmatch "show matching bracet
 set mat=4 "How many tenths of a second to blink
 set hlsearch
 set nocompatible "不设置兼容
+set backspace=indent,eol,start
 set gcr=a:block-blinkon0 "禁止光标闪烁
 if has("gui_running") " 禁止显示菜单，工具栏，滚动条
     set guioptions-=m
@@ -243,15 +184,6 @@ set foldmethod=syntax "基于语法进行折叠
 "set foldmethod=manual "手动折叠
 set nofoldenable      "启动代码时关闭折叠
 set shellslash
-"==============================================================
-" Nice window title
-"==============================================================
-if has('title') && (has('gui_running') || &title)
-    set titlestring=
-    set titlestring+=%f/ " file name
-    set titlestring+=%h%m%r%w " flag
-    "set titlestring+=/ -/ %{v:progname} " program name
-endif
 "=========================================================
 "   @   a.vim配置，相关文件的切换
 "=========================================================
@@ -448,6 +380,8 @@ func! Runs()
         exec '! %'
     elseif &filetype == 'tex'
         exec 'call Tex_ViewLaTeX()'
+    elseif &filetype == 'markdown'
+        exec "MarkdownPreview"
     endif
 endfunc
 
@@ -502,3 +436,49 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 "定义存放代码片段的文件夹 .vim/snippets下，使用自定义和默认的，将会的到全局，有冲突的会提示
 "let g:UltiSnipsSnippetDirectories=["snippets", "plugged/vim-snippets/UltiSnips"]
+"
+"
+"------------------------------------------------------------------------------
+"   @   markdown配置
+"------------------------------------------------------------------------------
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = '/home/qxqx/Downloads/firefox/firefox'
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+
+autocmd Filetype markdown inoremap ,f <Esc>/<++><CR>:nohlsearch<CR>c4l
+autocmd Filetype markdown inoremap ,n ---<Enter><Enter>
+autocmd Filetype markdown inoremap ,b **** <++><Esc>F*hi
+autocmd Filetype markdown inoremap ,s ~~~~ <++><Esc>F~hi
+autocmd Filetype markdown inoremap ,i ** <++><Esc>F*i
+autocmd Filetype markdown inoremap ,d `` <++><Esc>F`i
+autocmd Filetype markdown inoremap ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
+autocmd Filetype markdown inoremap ,h ====<Space><++><Esc>F=hi
+autocmd Filetype markdown inoremap ,p ![](<++>) <++><Esc>F[a
+autocmd Filetype markdown inoremap ,a [](<++>) <++><Esc>F[a
+autocmd Filetype markdown inoremap ,1 #<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap ,2 ##<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap ,3 ###<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap ,4 ####<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap ,l --------<Enter>
+
+
+
