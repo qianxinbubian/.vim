@@ -43,7 +43,6 @@ Plug 'majutsushi/tagbar'                                      "taglist的增强�
 Plug 'scrooloose/nerdtree'                                    "文件浏览
 Plug 'Yggdroot/indentLine'                                    "缩进线
 Plug 'https://github.com/junegunn/vim-easy-align.git'         "自动对其代码
-"Plug 'https://github.com/housansan/cvim'                      "超级C/C++工具
 Plug 'https://github.com/mbbill/echofunc.git'                 "显示函数原型 
 Plug 'https://github.com/Valloric/YouCompleteMe.git'          "YCM补全
 "Plug 'w0rp/ale'                                               "语句错误检查
@@ -53,10 +52,19 @@ Plug 'Yggdroot/LeaderF'
 Plug 'https://github.com/SirVer/ultisnips.git'
 Plug 'honza/vim-snippets'
 Plug 'https://github.com/yinflying/matlab.vim.git'            "matlab插件
-Plug 'vim-latex/vim-latex'
+Plug 'vim-latex/vim-latex'                                    "for latex
 Plug 'jiangmiao/auto-pairs'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-
+" for general writing
+Plug 'reedes/vim-wordy'
+Plug 'ron89/thesaurus_query.vim'
+Plug 'terryma/vim-multiple-cursors'     "multiple cursors action
+" Git
+Plug 'rhysd/conflict-marker.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
+Plug 'gisphm/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
