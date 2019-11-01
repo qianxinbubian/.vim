@@ -64,7 +64,6 @@ Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 Plug 'gisphm/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
-Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
