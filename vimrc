@@ -122,7 +122,11 @@ nnoremap <c-n>      <esc>:noh<CR>
 "colorscheme vividchalk
 "colo seoul256
 "let g:seoul256_background = 233
-set bg=dark
+set statusline=
+set statusline+=%1*[%n]
+set statusline+=%3*\ %{expand(\"%:p\")}%r%m%*
+set statusline+=%2*\ %=\[%{&ff}]\ %6*[row:%l/%L\ col:%c]\ (%p%%)
+set laststatus=2 "设置2行
 "*******************************************************
 "   @   General settings
 "*******************************************************
