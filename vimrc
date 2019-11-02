@@ -19,10 +19,15 @@ endif
 "===================================================================
 "   @   auto download plug.vim
 "===================================================================
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if islinux
+    if empty(glob('~/.vim/autoload/plug.vim'))
+      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+elseif iswindows
+    if empty(glob('$VIM/autoload/plug.vim'))
+    endif
 endif
 
 "=============================================================
@@ -55,6 +60,8 @@ Plug 'https://github.com/yinflying/matlab.vim.git'            "matlab插件
 Plug 'vim-latex/vim-latex'                                    "for latex
 Plug 'jiangmiao/auto-pairs'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " for general writing
 Plug 'reedes/vim-wordy'
 Plug 'ron89/thesaurus_query.vim'
@@ -490,6 +497,17 @@ autocmd Filetype markdown inoremap ,2 ##<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap ,3 ###<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap ,4 ####<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap ,l --------<Enter>
+"vim-markdown
+let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_override_foldtext = 4
+let g:vim_markdown_no_default_key_mappings = 1
+let g:vim_markdown_toc_autofit = 0
+let g:vim_markdown_emphasis_multiline = 0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_math = 1
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_json_frontmatter = 1
 
 
 
