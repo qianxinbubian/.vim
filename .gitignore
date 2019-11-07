@@ -1,3 +1,5 @@
 plugged/
 vim-latex-1.10.0.tar.gz
-#!plugged/
+
+!/plugged/vim-snippets/UltiSnips/
+!/plugged/thesaurus_query.vim/

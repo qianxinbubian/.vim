@@ -1,4 +1,9 @@
-﻿"===================================================================
+﻿"                     _     __  __ _   _
+"                    | |   |  \/  | | | |
+"                    | |   | |\/| | |_| |
+"                    | |___| |  | |  _  |
+"                    |_____|_|  |_|_| |_|
+"===================================================================
 "   @     判断操作系统是win还是Linux或者mac
 "===================================================================
 let g:iswindows=0
@@ -16,19 +21,6 @@ if has("gui_running")
 else
     let g:isgui=0
 endif
-"===================================================================
-"   @   auto download plug.vim
-"===================================================================
-if islinux
-    if empty(glob('~/.vim/autoload/plug.vim'))
-      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    endif
-elseif iswindows
-    if empty(glob('$VIM/autoload/plug.vim'))
-    endif
-endif
 
 "=============================================================
 "   @   Plugins With Plug
@@ -40,16 +32,20 @@ else
 endif
 Plug 'vim-scripts/a.vim'                                      "能够实现文件接口切换
 Plug 'vim-scripts/matchit.zip'                                "扩展%功能的插件，成对跳转
-Plug 'Shougo/neocomplcache.vim'                               "自动补全
+"Plug 'Shougo/neocomplcache.vim'                               "自动补全
 "Plug 'vim-scripts/OmniCppComplete'                            "C++补全插件
 Plug 'scrooloose/nerdcommenter'                               "注释插件
 Plug 'kshenoy/vim-signature'                                  "书签可视化插件
 Plug 'majutsushi/tagbar'                                      "taglist的增强版，查看标签，依赖于ctags
-Plug 'scrooloose/nerdtree'                                    "文件浏览
+Plug 'Shougo/defx.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+"Plug 'scrooloose/nerdtree'                                    "文件浏览
 Plug 'Yggdroot/indentLine'                                    "缩进线
 Plug 'https://github.com/junegunn/vim-easy-align.git'         "自动对其代码
 Plug 'https://github.com/mbbill/echofunc.git'                 "显示函数原型 
-Plug 'https://github.com/Valloric/YouCompleteMe.git'          "YCM补全
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'https://github.com/Valloric/YouCompleteMe.git'          "YCM补全
 "Plug 'w0rp/ale'                                               "语句错误检查
 Plug 'octol/vim-cpp-enhanced-highlight'                       "C++语法高亮
 Plug 'luochen1990/rainbow'                                    "彩虹括号
@@ -62,10 +58,11 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'vimwiki/vimwiki'
 " for general writing
 Plug 'reedes/vim-wordy'
 Plug 'ron89/thesaurus_query.vim'
-Plug 'terryma/vim-multiple-cursors'     "multiple cursors action
+"Plug 'terryma/vim-multiple-cursors'     "multiple cursors action
 " Git
 Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
@@ -112,14 +109,8 @@ inoremap <Leader>0 <esc>0i
 inoremap <Leader>4 <esc>A
 nnoremap <Leader>r  :terminal bash.exe<CR>
 nnoremap <Leader>e %
-"if g:islinux
-    "fun! ToggleFullscreen()
-        "call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-    "endf
-    "nnoremap <silent> <F11> :call ToggleFullscreen()<CR>
-"else
 nnoremap <c-f>  :LeaderfFile<CR>
-nnoremap <c-n>      <esc>:noh<CR>
+nnoremap <Leader>n  <esc>:noh<CR>
 "*******************************************************
 "   设置主题
 "*******************************************************
@@ -211,9 +202,77 @@ nnoremap <silent> <Leader>v :AV<CR>
 "=========================================================
 "   @   nerdtree的配置信息
 "=========================================================
+nnoremap <Leader>t :Defx -split=vertical -winwidth=30 -direction=botright<CR>  "目录树打开与否的转换
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> c
+  \ defx#do_action('copy')
+  nnoremap <silent><buffer><expr> m
+  \ defx#do_action('move')
+  nnoremap <silent><buffer><expr> p
+  \ defx#do_action('paste')
+  nnoremap <silent><buffer><expr> l
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> P
+  \ defx#do_action('open', 'pedit')
+  nnoremap <silent><buffer><expr> o
+  \ defx#do_action('open_or_close_tree')
+  nnoremap <silent><buffer><expr> K
+  \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N
+  \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> M
+  \ defx#do_action('new_multiple_files')
+  nnoremap <silent><buffer><expr> C
+  \ defx#do_action('toggle_columns',
+  \                'mark:indent:icon:filename:type:size:time')
+  nnoremap <silent><buffer><expr> S
+  \ defx#do_action('toggle_sort', 'time')
+  nnoremap <silent><buffer><expr> d
+  \ defx#do_action('remove')
+  nnoremap <silent><buffer><expr> r
+  \ defx#do_action('rename')
+  nnoremap <silent><buffer><expr> !
+  \ defx#do_action('execute_command')
+  nnoremap <silent><buffer><expr> x
+  \ defx#do_action('execute_system')
+  nnoremap <silent><buffer><expr> yy
+  \ defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> .
+  \ defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> ;
+  \ defx#do_action('repeat')
+  nnoremap <silent><buffer><expr> h
+  \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~
+  \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> q
+  \ defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space>
+  \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *
+  \ defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> j
+  \ line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k
+  \ line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l>
+  \ defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> <C-g>
+  \ defx#do_action('print')
+  nnoremap <silent><buffer><expr> cd
+  \ defx#do_action('change_vim_cwd')
+endfunction
+
+
 set tags=tags;
 set autochdir
-nnoremap <Leader>t :NERDTreeToggle<CR>  "目录树打开与否的转换
+"nnoremap <Leader>t :NERDTreeToggle<CR>  "目录树打开与否的转换
 let NERDTreeNaturalSort = 1    "按照自然数序列排序
 "let NERDTreeIgnore = ['\.ini$']
 let NERDTreeShowHidden=1
@@ -432,6 +491,23 @@ endfunc
 "------------------------------------------------------------------------------
 "   @   YCM配置
 "------------------------------------------------------------------------------
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+autocmd CursorHold * silent call CocActionAsync('highlight')
+nmap <leader>rn <Plug>(coc-rename)
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+
+
+
 let g:ycm_complete_in_comments = 1  "在注释中也能补全"
 let g:ycm_complete_in_strings = 1   "在字符串中也能补全"
 let g:ycm_cache_omnifunc = 0        "每次都重新生成匹配项"
@@ -508,6 +584,19 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_math = 1
 let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_json_frontmatter = 1
+"   vimwiki
+let g:vimwiki_list = [{'path':'~/Documents/ExamMark/KT'}]
+let g:vimwiki_camel_case = 0
+let g:vimwiki_hl_cb_checked = 1
+let g:vimwiki_menu = ''
+let g:vimwiki_CJK_length = 1
 
-
+"------------------------------------------------------------------------------
+"   @   Git settings
+"------------------------------------------------------------------------------
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gh :Gpush<CR>
+nnoremap <Leader>gl :Gpull<CR>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gv :Gvdiffsplit<CR>
 
