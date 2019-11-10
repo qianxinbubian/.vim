@@ -37,6 +37,7 @@ Plug 'vim-scripts/matchit.zip'                                "扩展%功能的�
 Plug 'scrooloose/nerdcommenter'                               "注释插件
 Plug 'kshenoy/vim-signature'                                  "书签可视化插件
 Plug 'majutsushi/tagbar'                                      "taglist的增强版，查看标签，依赖于ctags
+"   Defx
 Plug 'Shougo/defx.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
@@ -57,12 +58,12 @@ Plug 'vim-latex/vim-latex'                                    "for latex
 Plug 'jiangmiao/auto-pairs'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+"Plug 'plasticboy/vim-markdown'
 Plug 'vimwiki/vimwiki'
 " for general writing
 Plug 'reedes/vim-wordy'
 Plug 'ron89/thesaurus_query.vim'
-"Plug 'terryma/vim-multiple-cursors'     "multiple cursors action
+Plug 'terryma/vim-multiple-cursors'     "multiple cursors action
 " Git
 Plug 'rhysd/conflict-marker.vim'
 Plug 'tpope/vim-fugitive'
@@ -489,7 +490,7 @@ func! SetTitle2()
 endfunc  
 
 "------------------------------------------------------------------------------
-"   @   YCM配置
+"   @   COC.nvim    &   YCM配置
 "------------------------------------------------------------------------------
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -504,9 +505,6 @@ augroup mygroup
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-
-
-
 
 let g:ycm_complete_in_comments = 1  "在注释中也能补全"
 let g:ycm_complete_in_strings = 1   "在字符串中也能补全"
@@ -599,4 +597,11 @@ nnoremap <Leader>gh :Gpush<CR>
 nnoremap <Leader>gl :Gpull<CR>
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>gv :Gvdiffsplit<CR>
-
+"------------------------------------------------------------------------------
+"   @   multi_cursor
+"------------------------------------------------------------------------------
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+let g:multi_cursor_select_all_word_key = '<C-a>'
