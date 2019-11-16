@@ -21,7 +21,12 @@ if has("gui_running")
 else
     let g:isgui=0
 endif
-
+" autoload plug.vim
+if empty(glob('~/.vim/autoload/plug.vim'))
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 "=============================================================
 "   @   Plugins With Plug
 "=============================================================
@@ -51,8 +56,10 @@ Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'octol/vim-cpp-enhanced-highlight'                       "C++语法高亮
 Plug 'luochen1990/rainbow'                                    "彩虹括号
 Plug 'Yggdroot/LeaderF'
+" snippets
 Plug 'https://github.com/SirVer/ultisnips.git'
 Plug 'honza/vim-snippets'
+
 Plug 'https://github.com/yinflying/matlab.vim.git'            "matlab插件
 Plug 'vim-latex/vim-latex'                                    "for latex
 Plug 'jiangmiao/auto-pairs'
